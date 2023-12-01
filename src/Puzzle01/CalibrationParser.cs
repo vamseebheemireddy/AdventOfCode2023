@@ -23,51 +23,40 @@ public class CalibrationParser
     public int ParseCalibrationFile(ParsingMode mode)
     {
         var calibrationValue = 0;
-        var lineDigits = new List<int>();
+        var searchPattern = @"one|two|three|four|five|six|seven|eight|nine|\d";
+        var reverseSearchPattern = @"eno|owt|eerht|ruof|evif|xis|neves|thgie|enin|\d";
+
+        if (mode == ParsingMode.Numeric)
+        {
+            searchPattern = @"\d";
+            reverseSearchPattern = @"\d";
+        }
 
         foreach(var line in File.ReadLines(CalibrationFilePath))
         {
-            var parsedLine = (mode == ParsingMode.Semantic) ? ParseLineSemanticly(line) : line;
-
-            foreach(char character in parsedLine)
-            {
-                if(Char.IsDigit(character))
-                    lineDigits.Add( (int)Char.GetNumericValue(character) );
-            }
-            if (lineDigits.Count > 0)
-                calibrationValue += lineDigits.Last() + 10 * lineDigits.First();
-            lineDigits.Clear();
+            var reversedLine = new string(line.Reverse().ToArray());
+            var firstMatch = Regex.Match(line, searchPattern);
+            var lastMatch = Regex.Match(reversedLine, reverseSearchPattern);
+            if (firstMatch.Success && lastMatch.Success)
+                calibrationValue += 10 * ReplaceWordWithNumber(firstMatch) + ReplaceWordWithNumber(lastMatch);
         }
 
         return calibrationValue;
     }
 
-    public static string ParseLineSemanticly(string line)
-    {
-        var regexSearchString = "one|two|three|four|five|six|seven|eight|nine";
-        var regexSearch = new Regex(regexSearchString);
-        Match match;
-        do
-        {
-            match = Regex.Match(line, regexSearchString);
-            line = regexSearch.Replace(line, ReplaceWordWithNumber, 1);
-        } while (match.Success);
-        return line;
-    }
-
-    public static string ReplaceWordWithNumber(Match match)
+    public static int ReplaceWordWithNumber(Match match)
     {
         var number = match.Value switch
         {
-            "one" => "1",
-            "two" => "2",
-            "three" => "3",
-            "four" => "4",
-            "five" => "5",
-            "six" => "6",
-            "seven" => "7",
-            "eight" => "8",
-            "nine" => "9",
+            "one" or "eno" or "1" => 1,
+            "two" or "owt" or "2" => 2,
+            "three" or "eerht" or "3" => 3,
+            "four" or "ruof" or "4" => 4,
+            "five" or "evif" or "5" => 5,
+            "six" or "xis" or "6" => 6,
+            "seven" or "neves" or "7" => 7,
+            "eight" or "thgie" or "8" => 8,
+            "nine" or "enin" or "9" => 9,
             _ => throw new Exception("Error with string matching")
         };
         return number;
