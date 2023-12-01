@@ -1,4 +1,4 @@
-namespace AoC2023Tests;
+namespace tests;
 
 public class UnitTest1
 {
