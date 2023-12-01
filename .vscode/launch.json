@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Puzzle01 Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Puzzle01",
+            "program": "${workspaceFolder}/src/Puzzle01/bin/Debug/net7.0/Puzzle01.dll",
+            "args": ["input.txt"],
+            "cwd": "${workspaceFolder}/src/Puzzle01",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}
