@@ -20,6 +20,24 @@
 			},
         },
         {
+			"label": "build Puzzle02",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${workspaceFolder}/src/Puzzle02/Puzzle02.csproj",
+				"/property:GenerateFullPaths=true",
+            	"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+        },
+        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
