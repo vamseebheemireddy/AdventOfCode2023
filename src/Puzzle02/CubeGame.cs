@@ -8,9 +8,9 @@ using System.Text.RegularExpressions;
 
 #pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
 
-public record struct Draw(int Red, int Green, int Blue);
+public record struct TricolourSet(int Red, int Green, int Blue);
 
-public record struct Game(int Id, List<Draw> Draws);
+public record struct Game(int Id, List<TricolourSet> Draws, TricolourSet MininumValidSet, int Power);
 public class CubeGame
 {
     private string GameFilePath { get; set; }
@@ -20,6 +20,16 @@ public class CubeGame
     {
         GameFilePath = gameFilePath;
         Games = new List<Game>();
+    }
+
+    public int GetTotalPower()
+    {
+        var totalPower = 0;
+        foreach(var game in Games)
+        {
+            totalPower += game.Power;
+        }
+        return totalPower;
     }
 
     public void ParseGameFile()
@@ -38,18 +48,34 @@ public class CubeGame
             }
 
             var draws = ParseDraws(gameText[1]);
-            Games.Add(new Game(id, draws));
+            var mininumValidSet = FindMinimumValidSet(draws);
+            var power = mininumValidSet.Red * mininumValidSet.Green * mininumValidSet.Blue;
+            Games.Add(new Game(id, draws, mininumValidSet, power));
         }
     }
 
-    private static List<Draw> ParseDraws(string gameText)
+    private static TricolourSet FindMinimumValidSet(List<TricolourSet> draws)
     {
-        var draws = new List<Draw>();
+        var mininumValidSet = new TricolourSet(Red: 0, Green: 0, Blue: 0);
+        
+        foreach (var draw in draws)
+        {
+            mininumValidSet.Red = draw.Red > mininumValidSet.Red ? draw.Red : mininumValidSet.Red;
+            mininumValidSet.Green = draw.Green > mininumValidSet.Green ? draw.Green : mininumValidSet.Green;
+            mininumValidSet.Blue = draw.Blue > mininumValidSet.Blue ? draw.Blue : mininumValidSet.Blue;
+        }
+
+        return mininumValidSet;
+    }
+
+    private static List<TricolourSet> ParseDraws(string gameText)
+    {
+        var draws = new List<TricolourSet>();
         var drawTexts = gameText.Split(";");
 
         foreach (var drawText in drawTexts)
         {
-            var draw = new Draw(Red: 0, Green: 0, Blue: 0);
+            var draw = new TricolourSet(Red: 0, Green: 0, Blue: 0);
             var colourTexts = drawText.Split(",");
 
             foreach (var colourText in colourTexts)
@@ -76,7 +102,7 @@ public class CubeGame
         return draws;
     }
 
-    public List<int> FindValidGames(Draw totalCubes)
+    public List<int> FindValidGames(TricolourSet totalCubes)
     {
         var validGames = new List<int>();
         foreach (var game in Games)
@@ -87,7 +113,7 @@ public class CubeGame
         return validGames;
     }
 
-    private static bool AllDrawsValid(List<Draw> draws, Draw totalCubes)
+    private static bool AllDrawsValid(List<TricolourSet> draws, TricolourSet totalCubes)
     {
         foreach (var draw in draws)
         {
@@ -102,11 +128,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        var totalCubes = new Draw(Red: Convert.ToInt32(args[1]), Green: Convert.ToInt32(args[2]), Blue: Convert.ToInt32(args[3]));
+        var totalCubes = new TricolourSet(Red: Convert.ToInt32(args[1]), Green: Convert.ToInt32(args[2]), Blue: Convert.ToInt32(args[3]));
         var cubeGame = new CubeGame(args[0]);
         cubeGame.ParseGameFile();
+
         var validGames = cubeGame.FindValidGames(totalCubes);
         Console.WriteLine($@"Sum of valid game IDs is: {validGames.Sum()}");
+
+        var totalPower = cubeGame.GetTotalPower();
+        Console.WriteLine($@"Sum of game powers is: {totalPower}");
     }
 }
 
