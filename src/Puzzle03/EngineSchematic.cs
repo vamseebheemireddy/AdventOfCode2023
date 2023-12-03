@@ -13,19 +13,19 @@ public record struct Part(int Line, int StartPosition, int EndPosition, int Part
 
 public class EngineSchematic
 {
-    private readonly string[] schematic;
+    private readonly string[] Schematic;
 
-    private readonly List<Part> parts;
+    private readonly List<Part> Parts;
 
     public EngineSchematic(string schematicFilePath)
     {
-        schematic = File.ReadAllLines(schematicFilePath);
-        parts = new List<Part>();
+        Schematic = File.ReadAllLines(schematicFilePath);
+        Parts = new List<Part>();
     }
 
     public int FindValidParts()
     {
-        foreach(var (line, index) in schematic.Enumerated())
+        foreach(var (line, index) in Schematic.Enumerated())
         {
             var partMatch = Regex.Match(line, @"\d+");
 
@@ -33,18 +33,18 @@ public class EngineSchematic
             {
                 var newPart = new Part(index, partMatch.Index, partMatch.Index + partMatch.Length - 1, Convert.ToInt32(partMatch.Value));
                 if (IsValidPart(newPart))
-                    parts.Add(newPart);
+                    Parts.Add(newPart);
                 partMatch = partMatch.NextMatch();
             }
         }
 
-        var partsTotal = parts.Select(x => x.PartNumber).Sum();
+        var partsTotal = Parts.Select(x => x.PartNumber).Sum();
         return partsTotal;
     }
 
     private bool IsValidPart(Part part)
     {
-        var line = schematic[part.Line];
+        var line = Schematic[part.Line];
 
         if (part.StartPosition > 0)
             if (line.Substring(part.StartPosition - 1, 1) != ".")
@@ -59,11 +59,11 @@ public class EngineSchematic
         var noSymbol = new string ('.', rightEdge - leftEdge + 1);
 
         if (part.Line > 0)
-            if (!Equals(schematic[part.Line - 1].Substring(leftEdge, rightEdge - leftEdge + 1), noSymbol))
+            if (!Equals(Schematic[part.Line - 1].Substring(leftEdge, rightEdge - leftEdge + 1), noSymbol))
                 return true;
 
-        if (part.Line < schematic.Length - 1)
-            if (!Equals(schematic[part.Line + 1].Substring(leftEdge, rightEdge - leftEdge + 1), noSymbol))
+        if (part.Line < Schematic.Length - 1)
+            if (!Equals(Schematic[part.Line + 1].Substring(leftEdge, rightEdge - leftEdge + 1), noSymbol))
                 return true;
 
         return false;
