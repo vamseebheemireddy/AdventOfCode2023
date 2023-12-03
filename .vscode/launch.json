@@ -68,6 +68,28 @@
             "stopAtEntry": false
         },
         {
+            "name": "Puzzle04 Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Puzzle04",
+            "program": "${workspaceFolder}/src/Puzzle04/bin/Debug/net7.0/Puzzle04.dll",
+            "args": ["testInput.txt"],
+            "cwd": "${workspaceFolder}/src/Puzzle04",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Puzzle04",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Puzzle04",
+            "program": "${workspaceFolder}/src/Puzzle03/bin/Debug/net7.0/Puzzle04.dll",
+            "args": ["input.txt"],
+            "cwd": "${workspaceFolder}/src/Puzzle04",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"

@@ -73,6 +73,24 @@
 				"isDefault": true
 			},
         },
+		{
+			"label": "build Puzzle04",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${workspaceFolder}/src/Puzzle04/Puzzle04.csproj",
+				"/property:GenerateFullPaths=true",
+            	"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+        },
         {
             "label": "build",
             "command": "dotnet",
