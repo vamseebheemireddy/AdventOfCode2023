@@ -107,9 +107,27 @@ public class EngineSchematic
         return false;
     }
 
-    public List<Gear> GetActiveGears()
+    public List<(Gear, int)> GetActiveGears()
     {
-        var activeGears = new List<Gear>();
+        var activeGears = new List<(Gear, int)>();
+        var gearDictionary = new Dictionary<Gear, List<int>>();
+
+        foreach (var part in Parts)
+        {
+            foreach (var gear in part.Gears)
+            {
+                if (gearDictionary.ContainsKey(gear))
+                    gearDictionary[gear].Add(part.PartNumber);
+                else
+                    gearDictionary.Add(gear, new List<int>() { part.PartNumber });
+            }
+        }
+
+        foreach (var activeGear in gearDictionary)
+        {
+            if (activeGear.Value.Count == 2)
+                activeGears.Add((activeGear.Key, activeGear.Value.Select(x => x).Aggregate(1, (a, b) => a* b )));
+        }
         return activeGears;
     }
 }
@@ -124,6 +142,7 @@ class Program
         Console.WriteLine($@"Sum of valid part numbers is: {partTotal}");
 
         var activeGears = engine.GetActiveGears();
+        var gearRatioTotal = activeGears.Select(x => x.Item2).Sum();
         Console.WriteLine($@"Sum of gear ratios is: {gearRatioTotal}");
     }
 }
