@@ -1,6 +1,6 @@
-﻿// CalibrationParser
+﻿// CubeGame
 
-// Parse calibration file to return sum of codes
+// Find valid games in a set of cube games and total power
 
 namespace Puzzle2;
 
