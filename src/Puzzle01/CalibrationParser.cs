@@ -2,7 +2,7 @@
 
 // Parse calibration file to return sum of codes
 
-namespace Puzzle1;
+namespace Puzzle01;
 
 using System.Text.RegularExpressions;
 public enum ParsingMode

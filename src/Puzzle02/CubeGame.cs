@@ -2,7 +2,7 @@
 
 // Find valid games in a set of cube games and total power
 
-namespace Puzzle2;
+namespace Puzzle02;
 
 using System.Text.RegularExpressions;
 
