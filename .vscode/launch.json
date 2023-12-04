@@ -90,6 +90,28 @@
             "stopAtEntry": false
         },
         {
+            "name": "Puzzle05 Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Puzzle05",
+            "program": "${workspaceFolder}/src/Puzzle05/bin/Debug/net7.0/Puzzle05.dll",
+            "args": ["testInput.txt"],
+            "cwd": "${workspaceFolder}/src/Puzzle05",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Puzzle05",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Puzzle05",
+            "program": "${workspaceFolder}/src/Puzzle05/bin/Debug/net7.0/Puzzle05.dll",
+            "args": ["input.txt"],
+            "cwd": "${workspaceFolder}/src/Puzzle05",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
