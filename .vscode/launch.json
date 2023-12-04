@@ -83,7 +83,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build Puzzle04",
-            "program": "${workspaceFolder}/src/Puzzle03/bin/Debug/net7.0/Puzzle04.dll",
+            "program": "${workspaceFolder}/src/Puzzle04/bin/Debug/net7.0/Puzzle04.dll",
             "args": ["input.txt"],
             "cwd": "${workspaceFolder}/src/Puzzle04",
             "console": "internalConsole",
